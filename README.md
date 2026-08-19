@@ -5,10 +5,16 @@ Site vitrine d'une page pour l'atelier **Initiation aux pratiques chamaniques**
 
 En ligne : https://julienduplouy90-wq.github.io/tambouloup-chamanisme/
 
+> **Indexation désactivée pour le moment.** Le site est en ligne mais volontairement
+> `noindex` (balise meta dans `index.html` + `robots.txt`) tant qu'Alexandre n'a pas
+> validé le déroulé de l'atelier, les dates et le logo. Pour l'ouvrir aux moteurs :
+> supprimer la balise `<meta name="robots">` et vider le `Disallow:` de `robots.txt`.
+
 ## Structure
 
 ```
 index.html                    la page entière : HTML + CSS + JS intégrés
+robots.txt                    blocage d'indexation temporaire
 assets/fonts/*.woff2          polices auto-hébergées (sous-ensemble latin)
 assets/logo.png               ← à déposer (le loup au tambourin)
 ```
