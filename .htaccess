@@ -1,0 +1,87 @@
+# Réglages Apache pour l'hébergement Hostinger.
+# Ce fichier doit se trouver à la racine de public_html.
+
+# ----------------------------------------------------------------- Redirections
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+
+  # Tout en HTTPS
+  RewriteCond %{HTTPS} !=on
+  RewriteCond %{HTTP:X-Forwarded-Proto} !https
+  RewriteRule ^(.*)$ https://%{HTTP_HOST}/$1 [R=301,L]
+
+  # Une seule adresse canonique : sans www.
+  # Inutile sur le domaine temporaire Hostinger, à décommenter le jour où un
+  # vrai nom de domaine est branché sur le site.
+  # RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
+  # RewriteRule ^(.*)$ https://%1/$1 [R=301,L]
+</IfModule>
+
+# ------------------------------------------------------------------ Page 404
+ErrorDocument 404 /404.html
+
+# ------------------------------------------------------------- Pas d'indexation
+# Le site est en validation chez le client : la balise meta robots et robots.txt
+# le disent déjà, cet en-tête ferme la porte aussi pour les fichiers non HTML.
+# À SUPPRIMER en même temps que les deux autres quand le site s'ouvre au public.
+<IfModule mod_headers.c>
+  Header set X-Robots-Tag "noindex, nofollow"
+</IfModule>
+
+# ------------------------------------------------------------------ Compression
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/plain text/css text/xml
+  AddOutputFilterByType DEFLATE application/javascript application/json
+  AddOutputFilterByType DEFLATE application/xml image/svg+xml
+</IfModule>
+
+<IfModule mod_brotli.c>
+  AddOutputFilterByType BROTLI_COMPRESS text/html text/css application/javascript
+  AddOutputFilterByType BROTLI_COMPRESS application/json image/svg+xml
+</IfModule>
+
+# ------------------------------------------------------------------ Cache
+<IfModule mod_expires.c>
+  ExpiresActive On
+
+  # Polices et logo : ils ne changent jamais sans changer de nom.
+  <FilesMatch "\.(woff2|webp|png|jpg|jpeg|svg|ico)$">
+    ExpiresDefault "access plus 6 months"
+  </FilesMatch>
+
+  # Le HTML doit toujours être revalidé : tout le site tient dans ce fichier,
+  # une correction publiée doit apparaître immédiatement.
+  <FilesMatch "\.html$">
+    ExpiresDefault "access plus 0 seconds"
+  </FilesMatch>
+
+  <FilesMatch "\.(xml|txt)$">
+    ExpiresDefault "access plus 1 hour"
+  </FilesMatch>
+</IfModule>
+
+<IfModule mod_headers.c>
+  <FilesMatch "\.(woff2|webp|png)$">
+    Header set Cache-Control "public, max-age=15552000, immutable"
+  </FilesMatch>
+  <FilesMatch "\.html$">
+    Header set Cache-Control "public, max-age=0, must-revalidate"
+  </FilesMatch>
+</IfModule>
+
+# ------------------------------------------------------------------ Sécurité
+<IfModule mod_headers.c>
+  Header set X-Content-Type-Options "nosniff"
+  Header set Referrer-Policy "strict-origin-when-cross-origin"
+  Header set Permissions-Policy "geolocation=(), microphone=(), camera=()"
+  Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains"
+</IfModule>
+
+# Pas de liste de fichiers quand un dossier n'a pas d'index
+Options -Indexes
+
+# Types corrects pour les polices et les images modernes
+<IfModule mod_mime.c>
+  AddType font/woff2 .woff2
+  AddType image/webp .webp
+</IfModule>

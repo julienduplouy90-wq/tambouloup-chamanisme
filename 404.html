@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Page introuvable — Tambouloup</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#12100E">
+<link rel="icon" href="assets/logo.png" sizes="any">
+<style>
+@font-face{
+  font-family:'Cormorant Garamond'; font-style:normal; font-weight:600; font-display:swap;
+  src:url(assets/fonts/cormorant-garamond-600.woff2) format('woff2');
+}
+@font-face{
+  font-family:'Outfit'; font-style:normal; font-weight:300 600; font-display:swap;
+  src:url(assets/fonts/outfit-var.woff2) format('woff2');
+}
+*{ box-sizing:border-box; }
+body{
+  margin:0; min-height:100svh; display:flex; flex-direction:column;
+  align-items:center; justify-content:center; text-align:center; padding:40px 6vw; gap:6px;
+  font-family:"Outfit",-apple-system,"Segoe UI",Roboto,sans-serif; font-weight:300;
+  color:#F6EDDD; line-height:1.7;
+  background:radial-gradient(120% 90% at 50% 10%,#3A2A1C 0%,transparent 55%),#12100E;
+}
+img{ width:clamp(150px,22vw,210px); height:auto; display:block; margin-bottom:14px;
+     filter:invert(1) sepia(.32) saturate(1.35) hue-rotate(-12deg) drop-shadow(0 0 40px rgba(233,188,99,.28)); }
+p.kicker{ font-size:.72rem; letter-spacing:.4em; text-transform:uppercase; color:#E9BC63; margin:0 0 10px; }
+h1{ font-family:"Cormorant Garamond",Georgia,serif; font-weight:600; line-height:1.1;
+    font-size:clamp(2rem,5vw,3rem); margin:0 0 14px; }
+p.txt{ margin:0 0 28px; max-width:46ch; opacity:.8; }
+a{
+  display:inline-flex; align-items:center; justify-content:center;
+  padding:14px 30px; border-radius:999px; text-decoration:none; color:#fff; font-weight:500;
+  background:linear-gradient(135deg,#E0873A,#C9702B); box-shadow:0 18px 34px -18px rgba(224,135,58,.85);
+  transition:transform .4s cubic-bezier(.22,.9,.3,1);
+}
+a:hover{ transform:translateY(-3px); }
+</style>
+</head>
+<body>
+  <picture>
+    <source srcset="assets/logo.webp" type="image/webp">
+    <img src="assets/logo.png" width="760" height="760" alt="Tambouloup">
+  </picture>
+  <p class="kicker">Erreur 404</p>
+  <h1>Cette page a filé<br>dans un autre monde.</h1>
+  <p class="txt">Le tambour n'a rien trouvé à cette adresse. Revenez au cercle, tout s'y trouve.</p>
+  <a href="/">Retour à l'accueil</a>
+</body>
+</html>
