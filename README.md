@@ -3,7 +3,7 @@
 Site vitrine d'une page pour les **ateliers d'initiation aux pratiques chamaniques**
 d'Alexandre Godgenger (Au Mélilot, chemin des Humas, 65200 Gerde).
 
-En ligne : https://julienduplouy90-wq.github.io/tambouloup-chamanisme/
+En ligne : **https://khaki-spoonbill-538350.hostingersite.com/** (Hostinger, domaine temporaire)
 
 > **Indexation désactivée pour le moment.** Le site est en ligne mais volontairement
 > `noindex` (balise meta dans `index.html` + `robots.txt`) tant qu'Alexandre n'a pas
@@ -90,4 +90,25 @@ l'atelier de base. Tous les appels à l'action pointent donc vers l'atelier de b
 
 ## Mise en ligne
 
-Site 100 % statique servi par GitHub Pages depuis la branche `main`.
+Site 100 % statique hébergé chez **Hostinger** (plan Unlimited). Le site
+`khaki-spoonbill-538350.hostingersite.com` a été créé le 20/08/2026 avec un
+**domaine temporaire**, et le contenu de `public_html` déposé à la main (archive
+zip extraite depuis le gestionnaire de fichiers), faute de compte FTP.
+
+**GitHub Pages a été supprimé** : une seule adresse vivante.
+
+Pour régénérer l'archive à déposer :
+
+```bash
+git archive --format=zip -o site.zip HEAD index.html 404.html robots.txt .htaccess assets
+```
+
+Pour passer au déploiement automatique, créer le compte FTP dans hPanel puis
+déclarer `FTP_SERVEUR`, `FTP_UTILISATEUR` et `FTP_MOTDEPASSE` dans les secrets du
+dépôt : le workflow s'active alors tout seul à chaque push sur `main`. Tant que
+les secrets manquent, il s'arrête proprement sans faire échouer le build.
+
+**À savoir sur le domaine temporaire** : Hostinger sert son propre `robots.txt`
+sur les adresses en `.hostingersite.com` et ignore le nôtre. L'en-tête
+`X-Robots-Tag: noindex` posé par le `.htaccess` et la balise meta continuent de
+s'appliquer, donc le site reste hors des moteurs.

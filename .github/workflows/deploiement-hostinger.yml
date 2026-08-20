@@ -16,7 +16,22 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      # Tant que le compte FTP n'existe pas dans hPanel, le dépôt se fait à la
+      # main (zip → gestionnaire de fichiers). On ne fait pas échouer le
+      # workflow pour autant : il s'activera tout seul le jour où les trois
+      # secrets seront déclarés.
+      - name: Vérifier la présence des identifiants
+        id: identifiants
+        run: |
+          if [ -n "${{ secrets.FTP_SERVEUR }}" ] && [ -n "${{ secrets.FTP_UTILISATEUR }}" ] && [ -n "${{ secrets.FTP_MOTDEPASSE }}" ]; then
+            echo "pretes=oui" >> "$GITHUB_OUTPUT"
+          else
+            echo "pretes=non" >> "$GITHUB_OUTPUT"
+            echo "::notice::Secrets FTP absents — déploiement automatique ignoré."
+          fi
+
       - name: Envoi FTPS vers public_html
+        if: steps.identifiants.outputs.pretes == 'oui'
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
           server: ${{ secrets.FTP_SERVEUR }}
