@@ -1,7 +1,7 @@
 # Tambouloup — site one-page
 
-Site vitrine d'une page pour l'atelier **Initiation aux pratiques chamaniques**
-(Alexandre Godgenger — Au Mélilot, chemin des Humas, 65200 Gerde).
+Site vitrine d'une page pour les **ateliers d'initiation aux pratiques chamaniques**
+d'Alexandre Godgenger (Au Mélilot, chemin des Humas, 65200 Gerde).
 
 En ligne : https://julienduplouy90-wq.github.io/tambouloup-chamanisme/
 
@@ -23,28 +23,30 @@ assets/fonts/*.woff2          polices auto-hébergées (sous-ensemble latin)
 
 Aucun build, aucune dépendance, aucun appel à un domaine tiers.
 
-## Direction artistique — « encre & papier »
+## Direction artistique
 
-La direction part des supports réels du client : un **dessin à l'encre noire** (le logo)
-et une **affiche sur papier ancien**. Le site est donc du papier, pas une nuit étoilée.
+Nuit de braise, avec les codes du papier imprimé empruntés à l'affiche.
 
-- **Papiers** : `#EFE6D6` (fond), `#F7F1E7` (encarts), `#E2D5BE` (ombre de page)
-- **Encres** : `#181411`, `#4A403A`, `#8A7C6E`
-- **Accents tirés de l'affiche** : ocre `#A75B22`, or `#D9A441`
-- Titres en **Cormorant Garamond** (le serif de l'affiche), textes en **Outfit** ;
-  le mot « TAMBOULOUP » n'est jamais retypographié — c'est le logo lui-même.
-- **Le logo est le hero** : présenté grand, sans filtre ni fond, avec un halo doré discret.
-- **Filets doubles et fleurons** (`◆◆◆`) en séparateurs, comme un placard imprimé.
-- **Une seule section à l'encre** : *Le déroulé*. L'inversion n'est pas décorative —
-  c'est la partie « voyage intérieur » du week-end. La section contact reprend cette
-  encre pour fermer la page.
+- **Nuit** `#12100E` / `#1C1815`, **parchemin** `#F6EDDD`, **ocre** `#C9702B`,
+  **braise** `#E0873A`, **or** `#E9BC63`, touche de **sauge** `#7E8E6C`
+- Titres en **Cormorant Garamond**, textes en **Outfit** ; le mot « TAMBOULOUP »
+  n'est jamais retypographié — c'est le logo lui-même.
+- **Le loup passe devant le décor animé.** Les rayons (deux `repeating-conic-gradient`
+  en rotation lente) et le halo qui respire sont **centrés sur le logo** et masqués
+  au centre : l'anneau tourne autour du dessin, jamais au travers. Un médaillon
+  sombre décolle le loup du fond, et l'encre noire est inversée en ivoire chaud.
+- **Filets et fleurons `◆◆◆`** en ouverture de chaque section, bloc *Infos pratiques*
+  présenté comme une affiche encadrée : les codes du placard imprimé, sur fond nuit.
+- Les cartes de l'atelier sont nommées (« Premier geste »…) plutôt que numérotées :
+  ce sont des gestes qui se suivent, pas une liste décorative.
 - Grain de papier animé, apparitions en cascade, `prefers-reduced-motion` respecté.
 
 ## Le logo
 
 `assets/logo.*` est généré à partir de la photo du dessin original : redimensionné à
-760 px, **détouré** (la valeur de gris devient le canal alpha) et recoloré en encre
-`#181411`. Il se pose donc sur n'importe quel fond, sans le carré blanc d'origine.
+760 px, **détouré** (la valeur de gris devient le canal alpha) et recoloré en encre.
+Il se pose donc sur n'importe quel fond, sans le carré blanc d'origine, et le CSS
+l'inverse en ivoire pour la version nuit.
 Le poids (58 Ko) tient presque entièrement au canal alpha : baisser la qualité WebP
 ne change rien, c'est déjà le minimum pour ce niveau de détail.
 
@@ -55,27 +57,35 @@ masque alpha, appliqué sur un aplat couleur encre.
 ## Parti pris performance
 
 - **1 seule requête pour la page** : CSS et JS sont intégrés dans `index.html`
-  (≈ 29 Ko non compressé, ≈ 9 Ko une fois servi en gzip/brotli). Sur un fichier
+  (≈ 33 Ko non compressé, ≈ 9 Ko une fois servi en gzip/brotli). Sur un fichier
   de cette taille, supprimer deux allers-retours réseau rapporte bien plus que
   minifier — le code reste donc lisible et modifiable.
 - **Polices auto-hébergées et préchargées** (`rel="preload"`), sous-ensemble latin
   uniquement, `font-display:swap` : plus de DNS + TLS vers `fonts.googleapis.com`
   et `fonts.gstatic.com`, plus de CSS tierce bloquant le rendu. 3 fichiers, 79 Ko.
   Outfit est une police variable : un seul fichier couvre les graisses 300 → 600.
-- **Logo préchargé en WebP** via `<picture>`, avec dimensions et `aspect-ratio`
-  réservés : aucun décalage de mise en page pendant le chargement.
+- **Logo préchargé en WebP** via `<picture>`, dimensions et `aspect-ratio` réservés :
+  aucun décalage de mise en page pendant le chargement.
 - **Zéro écouteur de scroll.** L'en-tête collant et les apparitions au défilement
   passent par `IntersectionObserver` (callbacks hors du chemin critique).
-- **Décors en CSS pur**, aucun SVG généré en JS, `backdrop-filter` réservé à la
-  barre de navigation.
+- **Décors en CSS pur**, aucun SVG généré en JS, animations composées par le GPU et
+  **mises en pause dès que le hero quitte l'écran**.
 - Sans JavaScript, tout le contenu reste visible.
 
-Mesuré en local : 5 requêtes au total (page + 3 polices + logo), `DOMContentLoaded` ≈ 165 ms.
+## Contenu
 
-## Contenu à compléter
+La page présente **l'ensemble de l'offre**, comme demandé par Alexandre : des ateliers
+d'initiation aux pratiques chamaniques, dont l'atelier de base est le premier — il
+conditionne tous les suivants. La section *Les ateliers* annonce les ateliers à venir
+(plutôt orientés développement personnel) sans en promettre les dates : elles sont
+communiquées directement, par téléphone ou par mail, aux personnes ayant suivi
+l'atelier de base. Tous les appels à l'action pointent donc vers l'atelier de base.
 
-- Les **dates** ne sont pas fixées (« à définir ultérieurement ») — à remplacer dans la section *Infos pratiques* et dans le déroulé dès qu'elles le sont.
-- Le **déroulé en quatre passages** est une mise en récit de l'objectif indiqué sur l'affiche : à valider ou ajuster avec Alexandre.
+À compléter :
+
+- Les **dates** ne sont pas fixées (« à définir ultérieurement »).
+- Le **déroulé en quatre passages** est une mise en récit de l'objectif indiqué sur
+  l'affiche : à valider ou ajuster avec Alexandre.
 - Possible ajout : photos du lieu, formulaire de contact, page mentions légales.
 
 ## Mise en ligne
