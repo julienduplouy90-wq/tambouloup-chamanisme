@@ -1,0 +1,36 @@
+name: Déployer sur Hostinger
+
+# Le site est statique : il n'y a rien à construire, on envoie le dépôt tel quel.
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: deploiement
+  cancel-in-progress: true
+
+jobs:
+  deployer:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Envoi FTPS vers public_html
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_SERVEUR }}
+          username: ${{ secrets.FTP_UTILISATEUR }}
+          password: ${{ secrets.FTP_MOTDEPASSE }}
+          protocol: ftps
+          port: 21
+          local-dir: ./
+          server-dir: ${{ vars.FTP_DOSSIER || '/public_html/' }}
+          # Ne supprime pas ce qui n'appartient pas au site (fichiers de
+          # vérification déposés par Google, dossiers créés par l'hébergeur…).
+          dangerous-clean-slate: false
+          exclude: |
+            **/.git*
+            **/.git*/**
+            **/node_modules/**
+            README.md
